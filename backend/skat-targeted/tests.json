@@ -1,0 +1,177 @@
+{
+  "cors_preflight": {
+    "name": "CORS preflight",
+    "method": "OPTIONS",
+    "body": {},
+    "expected": {
+      "statusCode": 200
+    }
+  },
+  "get_pathogens": {
+    "name": "GET returns available pathogens",
+    "method": "GET",
+    "body": {},
+    "expected": {
+      "statusCode": 200,
+      "body": {
+        "pathogens": [
+          "E. coli (чувств.)",
+          "E. coli (ESBL)",
+          "K. pneumoniae (ESBL)",
+          "P. aeruginosa (чувств.)",
+          "P. aeruginosa (MDR)",
+          "S. aureus (MRSA)",
+          "S. aureus (MSSA)"
+        ]
+      }
+    }
+  },
+  "post_ecoli_sensitive": {
+    "name": "POST E. coli sensitive",
+    "method": "POST",
+    "body": {
+      "pathogen": "E. coli (чувств.)",
+      "allergy": "нет"
+    },
+    "expected": {
+      "statusCode": 200,
+      "body": {
+        "type": "targeted",
+        "pathogen": "E. coli (чувств.)",
+        "risk_group": "low_risk"
+      }
+    }
+  },
+  "post_ecoli_esbl": {
+    "name": "POST E. coli ESBL - ceftriaxone resistant",
+    "method": "POST",
+    "body": {
+      "pathogen": "E. coli (ESBL)",
+      "allergy": ""
+    },
+    "expected": {
+      "statusCode": 200,
+      "body": {
+        "type": "targeted",
+        "pathogen": "E. coli (ESBL)",
+        "risk_group": "late_nosocomial_mrsa"
+      }
+    }
+  },
+  "post_pseudomonas_mdr": {
+    "name": "POST P. aeruginosa MDR",
+    "method": "POST",
+    "body": {
+      "pathogen": "P. aeruginosa (MDR)",
+      "allergy": "",
+      "crcl": 45
+    },
+    "expected": {
+      "statusCode": 200,
+      "body": {
+        "type": "targeted",
+        "pathogen": "P. aeruginosa (MDR)"
+      }
+    }
+  },
+  "post_mrsa": {
+    "name": "POST MRSA pathogen",
+    "method": "POST",
+    "body": {
+      "pathogen": "S. aureus (MRSA)",
+      "allergy": "нет"
+    },
+    "expected": {
+      "statusCode": 200,
+      "body": {
+        "type": "targeted",
+        "pathogen": "S. aureus (MRSA)",
+        "risk_group": "late_nosocomial_mrsa"
+      }
+    }
+  },
+  "post_mssa": {
+    "name": "POST MSSA pathogen",
+    "method": "POST",
+    "body": {
+      "pathogen": "S. aureus (MSSA)",
+      "allergy": ""
+    },
+    "expected": {
+      "statusCode": 200,
+      "body": {
+        "type": "targeted",
+        "pathogen": "S. aureus (MSSA)",
+        "risk_group": "low_risk"
+      }
+    }
+  },
+  "post_pseudomonas_sensitive_with_allergy": {
+    "name": "POST with penicillin allergy on P. aeruginosa sensitive",
+    "method": "POST",
+    "body": {
+      "pathogen": "P. aeruginosa (чувств.)",
+      "allergy": "пенициллин"
+    },
+    "expected": {
+      "statusCode": 200,
+      "body": {
+        "type": "targeted",
+        "pathogen": "P. aeruginosa (чувств.)"
+      }
+    }
+  },
+  "post_missing_pathogen": {
+    "name": "POST missing pathogen returns 400",
+    "method": "POST",
+    "body": {
+      "allergy": ""
+    },
+    "expected": {
+      "statusCode": 400
+    }
+  },
+  "post_unknown_pathogen": {
+    "name": "POST unknown pathogen returns 400",
+    "method": "POST",
+    "body": {
+      "pathogen": "Unknown Pathogen",
+      "allergy": ""
+    },
+    "expected": {
+      "statusCode": 400
+    }
+  },
+  "post_kpneumoniae_esbl": {
+    "name": "POST K. pneumoniae ESBL",
+    "method": "POST",
+    "body": {
+      "pathogen": "K. pneumoniae (ESBL)",
+      "allergy": "нет",
+      "crcl": 25
+    },
+    "expected": {
+      "statusCode": 200,
+      "body": {
+        "type": "targeted",
+        "pathogen": "K. pneumoniae (ESBL)",
+        "risk_group": "late_nosocomial_mrsa"
+      }
+    }
+  },
+  "post_ecoli_cephalosporin_allergy": {
+    "name": "POST with cephalosporin allergy on E. coli sensitive",
+    "method": "POST",
+    "body": {
+      "pathogen": "E. coli (чувств.)",
+      "allergy": "цефалоспорин"
+    },
+    "expected": {
+      "statusCode": 200,
+      "body": {
+        "type": "targeted",
+        "pathogen": "E. coli (чувств.)"
+      }
+    }
+  }
+}

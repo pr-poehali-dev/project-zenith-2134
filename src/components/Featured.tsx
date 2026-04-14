@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const features = [
   {
     label: "Доказательная база",
@@ -36,9 +38,12 @@ export default function Featured() {
             </div>
           ))}
         </div>
-        <button className="bg-neutral-900 text-white border border-neutral-900 px-6 py-3 text-sm transition-all duration-300 hover:bg-white hover:text-neutral-900 cursor-pointer w-fit uppercase tracking-wide">
+        <Link
+          to="/bot"
+          className="bg-neutral-900 text-white border border-neutral-900 px-6 py-3 text-sm transition-all duration-300 hover:bg-white hover:text-neutral-900 cursor-pointer w-fit uppercase tracking-wide inline-block"
+        >
           Попробовать бота
-        </button>
+        </Link>
       </div>
     </div>
   );

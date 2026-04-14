@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 interface HeaderProps {
   className?: string;
 }
@@ -14,12 +16,12 @@ export default function Header({ className }: HeaderProps) {
           >
             Возможности
           </a>
-          <a
-            href="#contact"
+          <Link
+            to="/bot"
             className="text-white hover:text-neutral-400 transition-colors duration-300 uppercase text-sm"
           >
             Попробовать
-          </a>
+          </Link>
         </nav>
       </div>
     </header>

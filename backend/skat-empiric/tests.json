@@ -1,0 +1,290 @@
+{
+  "cors_preflight": {
+    "name": "CORS preflight",
+    "method": "OPTIONS",
+    "body": {},
+    "expected": {
+      "statusCode": 200
+    }
+  },
+  "get_risk_factors_and_localizations": {
+    "name": "GET returns risk factors and localizations",
+    "method": "GET",
+    "body": {},
+    "expected": {
+      "statusCode": 200,
+      "body": {
+        "risk_factors": [
+          "ИВЛ > 5 дней",
+          "Предшествующие антибиотики (цефалоспорины/фторхинолоны)",
+          "Колонизация/инфекция МРЗС в анамнезе",
+          "Нейтропения (<500)",
+          "Катетер центральной вены >7 дней",
+          "Послеоперационная рана (абдоминальная)",
+          "Длительная госпитализация (>14 дней)"
+        ],
+        "localizations": [
+          "Пневмония",
+          "Интраабдоминальная инфекция",
+          "ИМВП",
+          "Сепсис"
+        ]
+      }
+    }
+  },
+  "post_community_acquired_pneumonia": {
+    "name": "POST community-acquired pneumonia",
+    "method": "POST",
+    "body": {
+      "localization": "Пневмония",
+      "hospital_days": 0,
+      "risk_factors": [],
+      "allergy": "нет",
+      "age": 65,
+      "weight": 70,
+      "serum_creatinine": 1.2,
+      "sex": "male",
+      "sofa_score": 3,
+      "leukocytes": "10.0-15.0",
+      "esr": "30-60",
+      "pct": "0.25-0.5"
+    },
+    "expected": {
+      "statusCode": 200,
+      "body": {
+        "type": "empiric",
+        "stratification": "community_acquired",
+        "first_line": "Амоксициллин/клавуланат"
+      }
+    }
+  },
+  "post_early_nosocomial_pneumonia": {
+    "name": "POST early nosocomial pneumonia",
+    "method": "POST",
+    "body": {
+      "localization": "Пневмония",
+      "hospital_days": 5,
+      "risk_factors": [],
+      "allergy": "",
+      "age": 50,
+      "weight": 80,
+      "serum_creatinine": 1.0,
+      "sex": "male",
+      "sofa_score": 1,
+      "leukocytes": "4.0-10.0",
+      "esr": "<10",
+      "pct": "<0.1"
+    },
+    "expected": {
+      "statusCode": 200,
+      "body": {
+        "type": "empiric",
+        "stratification": "early_nosocomial",
+        "first_line": "Цефтриаксон"
+      }
+    }
+  },
+  "post_late_nosocomial_mrsa_pneumonia": {
+    "name": "POST late nosocomial MRSA pneumonia",
+    "method": "POST",
+    "body": {
+      "localization": "Пневмония",
+      "hospital_days": 14,
+      "risk_factors": ["Колонизация/инфекция МРЗС в анамнезе"],
+      "allergy": "",
+      "age": 70,
+      "weight": 65,
+      "serum_creatinine": 1.5,
+      "sex": "male",
+      "sofa_score": 8,
+      "leukocytes": ">15.0",
+      "esr": ">60",
+      "pct": ">0.5"
+    },
+    "expected": {
+      "statusCode": 200,
+      "body": {
+        "type": "empiric",
+        "stratification": "late_nosocomial_mrsa",
+        "first_line": "Линезолид + Цефепим"
+      }
+    }
+  },
+  "post_late_nosocomial_pseudomonas_pneumonia": {
+    "name": "POST late nosocomial Pseudomonas pneumonia",
+    "method": "POST",
+    "body": {
+      "localization": "Пневмония",
+      "hospital_days": 20,
+      "risk_factors": ["ИВЛ > 5 дней"],
+      "allergy": "",
+      "age": 55,
+      "weight": 75,
+      "serum_creatinine": 1.1,
+      "sex": "male",
+      "sofa_score": 5,
+      "leukocytes": ">15.0",
+      "esr": "30-60",
+      "pct": ">0.5"
+    },
+    "expected": {
+      "statusCode": 200,
+      "body": {
+        "type": "empiric",
+        "stratification": "late_nosocomial_pseudomonas",
+        "first_line": "Пиперациллин/тазобактам"
+      }
+    }
+  },
+  "post_penicillin_allergy": {
+    "name": "POST with penicillin allergy triggers warning",
+    "method": "POST",
+    "body": {
+      "localization": "Пневмония",
+      "hospital_days": 0,
+      "risk_factors": [],
+      "allergy": "пенициллин",
+      "age": 40,
+      "weight": 70,
+      "serum_creatinine": 1.0,
+      "sex": "female",
+      "sofa_score": 2,
+      "leukocytes": "10.0-15.0",
+      "esr": "10-30",
+      "pct": "0.1-0.25"
+    },
+    "expected": {
+      "statusCode": 200,
+      "body": {
+        "type": "empiric",
+        "stratification": "community_acquired"
+      }
+    }
+  },
+  "post_intraabdominal_community": {
+    "name": "POST intra-abdominal community acquired",
+    "method": "POST",
+    "body": {
+      "localization": "Интраабдоминальная инфекция",
+      "hospital_days": 1,
+      "risk_factors": [],
+      "allergy": "",
+      "age": 60,
+      "weight": 80,
+      "serum_creatinine": 1.0,
+      "sex": "male",
+      "sofa_score": 2,
+      "leukocytes": "10.0-15.0",
+      "esr": "10-30",
+      "pct": "0.25-0.5"
+    },
+    "expected": {
+      "statusCode": 200,
+      "body": {
+        "type": "empiric",
+        "stratification": "community_acquired",
+        "first_line": "Цефтриаксон + Метронидазол"
+      }
+    }
+  },
+  "post_uti_community": {
+    "name": "POST UTI community acquired",
+    "method": "POST",
+    "body": {
+      "localization": "ИМВП",
+      "hospital_days": 0,
+      "risk_factors": [],
+      "allergy": "нет",
+      "age": 30,
+      "weight": 60,
+      "serum_creatinine": 0.9,
+      "sex": "female",
+      "sofa_score": 0,
+      "leukocytes": "4.0-10.0",
+      "esr": "<10",
+      "pct": "<0.1"
+    },
+    "expected": {
+      "statusCode": 200,
+      "body": {
+        "type": "empiric",
+        "stratification": "community_acquired",
+        "first_line": "Цефтриаксон"
+      }
+    }
+  },
+  "post_sepsis_early_nosocomial": {
+    "name": "POST sepsis early nosocomial",
+    "method": "POST",
+    "body": {
+      "localization": "Сепсис",
+      "hospital_days": 3,
+      "risk_factors": [],
+      "allergy": "",
+      "age": 70,
+      "weight": 80,
+      "serum_creatinine": 2.0,
+      "sex": "male",
+      "sofa_score": 10,
+      "leukocytes": ">15.0",
+      "esr": ">60",
+      "pct": ">0.5"
+    },
+    "expected": {
+      "statusCode": 200,
+      "body": {
+        "type": "empiric",
+        "stratification": "early_nosocomial",
+        "first_line": "Пиперациллин/тазобактам"
+      }
+    }
+  },
+  "post_missing_localization": {
+    "name": "POST missing localization returns 400",
+    "method": "POST",
+    "body": {
+      "hospital_days": 5,
+      "risk_factors": []
+    },
+    "expected": {
+      "statusCode": 400
+    }
+  },
+  "post_unknown_localization": {
+    "name": "POST unknown localization returns 400",
+    "method": "POST",
+    "body": {
+      "localization": "Неизвестная",
+      "hospital_days": 5,
+      "risk_factors": []
+    },
+    "expected": {
+      "statusCode": 400
+    }
+  },
+  "post_female_crcl": {
+    "name": "POST female CrCl calculation",
+    "method": "POST",
+    "body": {
+      "localization": "Пневмония",
+      "hospital_days": 0,
+      "risk_factors": [],
+      "allergy": "",
+      "age": 50,
+      "weight": 60,
+      "serum_creatinine": 1.0,
+      "sex": "female",
+      "sofa_score": 0,
+      "leukocytes": "",
+      "esr": "",
+      "pct": ""
+    },
+    "expected": {
+      "statusCode": 200,
+      "body": {
+        "type": "empiric",
+        "stratification": "community_acquired"
+      }
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import { useScroll, useTransform, motion } from "framer-motion";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 
 export default function Hero() {
   const container = useRef<HTMLDivElement>(null);
@@ -33,12 +34,12 @@ export default function Hero() {
         <p className="text-lg md:text-xl max-w-2xl mx-auto opacity-90 leading-relaxed">
           Интеллектуальный помощник для выбора антибактериальной терапии на основе протоколов СКАТ
         </p>
-        <a
-          href="#features"
+        <Link
+          to="/bot"
           className="inline-block mt-8 border border-white text-white px-8 py-3 text-sm uppercase tracking-wide hover:bg-white hover:text-neutral-900 transition-all duration-300"
         >
           Узнать больше
-        </a>
+        </Link>
       </div>
     </div>
   );

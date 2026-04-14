@@ -1,0 +1,1 @@
+# No external dependencies - all data is in-memory, using only stdlib (json, os)
